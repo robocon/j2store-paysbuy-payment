@@ -43,7 +43,26 @@ class plgJ2StorePayment_paysbuy extends J2StorePaymentPlugin
             $data['orderpayment_amount'] = $data['orderpayment_amount']*$pre_usd;
         }
 
-        $vars->form_url = $this->_getPaysbuyUrl()."?lang=$lang";
+        switch ($data['paytype']) {
+            case 'cash':
+                $paytype = "cs=true";
+                break;
+            
+            case 'credit':
+                $paytype = "c=true";
+                break;
+
+            case 'bank':
+                $paytype = "ob=true";
+                break;
+
+            case 'paysbuy':
+            default:
+                $paytype = "psb=true";
+                break;
+        }
+
+        $vars->form_url = $this->_getPaysbuyUrl()."?".$paytype."&lang=$lang";
         $vars->username = $this->params->get('username','');
         $vars->inv = $data['orderpayment_id'];
         $vars->itm = $data['order_id'];
@@ -126,8 +145,8 @@ class plgJ2StorePayment_paysbuy extends J2StorePaymentPlugin
                     if($info['result']==="00" && !is_null($tOrder->id) && $tOrder->user_id==$user->id){
                         
                         // Update Status from Paysbuy
-                        $tOrder->order_state = "Pending";
-                        $tOrder->order_state_id = 4;
+                        $tOrder->order_state = "Confirmed";
+                        $tOrder->order_state_id = 1;
                         $tOrder->store();
                     }
 
@@ -169,10 +188,17 @@ class plgJ2StorePayment_paysbuy extends J2StorePaymentPlugin
      */
     public function _verifyForm( $submitted_values )
     {
+        $jinput = JFactory::getApplication()->input;
         $object = new JObject();
         $object->error = false;
         $object->message = '';
 
+        $type = $jinput->post->get('paytype');
+        if(!$type){
+            $object->error = true;
+            $object->message .= "<li>".JText::_( "Please select pay type" )."</li>";
+        }
+        
         return $object;
     }
 
