@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="j2store" method="upgrade">
+	<name>plg_j2store_payments_paysbuy</name>
+	<version>1.0</version>
+	<creationDate>Jan 2013</creationDate>
+	<author>kritsanasak</author>
+	<authorEmail>roboconk@gmail.com</authorEmail>
+	<authorUrl>-</authorUrl>
+	<copyright>-</copyright>
+	<license>The MIT License (MIT)</license>
+	<description>Paysbuy Gateway</description>
+	<files>
+		<filename plugin="payment_paysbuy">payment_paysbuy.php</filename>
+		<folder>payment_paysbuy</folder>
+		<folder>lib</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">languages/en-GB.plg_j2store_payment_paysbuy.ini</language>
+		<language tag="en-GB">languages/en-GB.plg_j2store_payment_paysbuy.sys.ini</language>
+	</languages>
+	<config>
+	<fields name="params">
+		<fieldset name="basic">
+			<field name="sandbox" type="radio" default="1" label="Test on sandbox?" >
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="psbid" type="text" size="30" default="" label="Paysbuy psbID"/>
+			<field name="username" type="text" size="30" default="" label="Paysbuy username"/>
+			<field name="secureCode" type="text" size="30" default="" label="Paysbuy secureCode"/>
+		</fieldset>
+	</fields>
+</config>				
+</extension>
